@@ -5,15 +5,22 @@ package section11.book;
  */
 public class AllSort {
     public static void main(String[] args){
+        //冒泡
         int[] nums1 = {3,4,1,5,2,7,6};
         bubbleSort(nums1);
         showSortResult("bubble",nums1);
+        //选择
         int[] nums2 = {3,4,1,5,2,7,6};
         selectionSort(nums2);
         showSortResult("selection",nums2);
+        //归并
         int[] nums3 = {3,4,1,5,2,7,6};
         mergeSort(nums3,0,nums3.length-1);
         showSortResult("merge",nums3);
+        //快速
+        int[] nums4 = {3,4,1,5,2,7,6};
+        quickSort(nums4,0,nums4.length-1);
+        showSortResult("quick",nums4);
     }
 
     //---------------------------公用---------------------------
@@ -77,6 +84,7 @@ public class AllSort {
         }
     }
 
+    //归并两端分别的有序数组
     private static void merge(int[] nums,int low,int middle,int high){
         //将归并前的前后两段复制一份到新数组helper中
         int[] helper = new int[nums.length];
@@ -110,8 +118,31 @@ public class AllSort {
     }
 
     //-----------------------快速排序------------------------
-    private static void quickSort(int[] nums){
-
+    private static void quickSort(int[] nums,int low,int high){
+        if(low < high){
+            int leftPointer = low;
+            int rightPointer = high;
+            int pivotValue = nums[low];
+            while(leftPointer < rightPointer){
+                //先右侧找比pivotValue小的，注意防止越界
+                while((rightPointer >= low) && (nums[rightPointer] >= pivotValue)){
+                    rightPointer--;
+                }
+                if(leftPointer < rightPointer){
+                    swap(nums,leftPointer,rightPointer);
+                }
+                //先左侧找比pivotValue大的，注意防止越界
+                while((leftPointer<=high) && (nums[leftPointer] <= pivotValue)){
+                    leftPointer++;
+                }
+                if(leftPointer < rightPointer){
+                    swap(nums,leftPointer,rightPointer);
+                }
+            }
+            //while结束时，在pivotValue左侧都比它小，右侧都比它大
+            //递归
+            quickSort(nums,low,leftPointer-1);
+            quickSort(nums,leftPointer+1,high);
+        }
     }
-
 }
